@@ -9,7 +9,7 @@ import io.ktor.freemarker.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
-import java.lang.IllegalArgumentException
+import kotlin.IllegalArgumentException
 
 const val PHRASE_ENDPOINT = "$API_VERSION/phrase"
 const val PHRASES = "/phrases"
@@ -35,9 +35,18 @@ fun Route.phrases(db: Repository) {
 
         post(PHRASES) {
             val params = call.receiveParameters()
-            val emoji = params["emoji"] ?: throw IllegalArgumentException("Missing parameter: emoji")
-            val phrase = params["phrase"] ?: throw IllegalArgumentException("Missing parameter: phrase")
-            db.add(EmojiPhrase(emoji, phrase))
+            val action = params["action"] ?: throw IllegalArgumentException("Missing parater: action")
+            when (action) {
+                "delete" -> {
+                    val id = params["id"] ?: throw IllegalArgumentException("Missing parameter: id")
+                    db.remove(id)
+                }
+                "add" -> {
+                    val emoji = params["emoji"] ?: throw IllegalArgumentException("Missing parameter: emoji")
+                    val phrase = params["phrase"] ?: throw IllegalArgumentException("Missing parameter: phrase")
+                    db.add(EmojiPhrase(emoji, phrase))
+                }
+            }
             call.respondRedirect(PHRASES)
         }
     }
