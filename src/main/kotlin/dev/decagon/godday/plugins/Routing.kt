@@ -9,7 +9,7 @@ import io.ktor.application.*
 import io.ktor.response.*
 import io.ktor.request.*
 
-fun Application.configureRouting() {
+fun Application.configureRouting(db: Repository) {
     // Starting point for a Ktor app:
     routing {
         get("/") {
@@ -24,13 +24,8 @@ fun Application.configureRouting() {
             call.respondText("About")
         }
 
-        fun phrase(db: Repository) {
-            post(PHRASE_ENDPOINT) {
-                val request = call.receive<Request>()
-                val phrase = db.add(EmojiPhrase(request.emoji, request.phrase))
-                call.respond(phrase)
-            }
-        }
+        // API
+        phrase(db)
     }
 
 }
