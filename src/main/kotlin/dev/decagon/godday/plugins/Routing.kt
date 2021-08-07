@@ -25,7 +25,8 @@ fun Application.configureRouting(db: Repository) {
         }
 
         // API
-        phrase(db)
+        phrase(db)   // POST
+        phrases(db)  // GET
     }
 
 }

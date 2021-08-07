@@ -23,7 +23,7 @@ class InMemoryRepository : Repository {
         phrases.find { it.id.toString() == id } ?:
         throw IllegalArgumentException("No phrase for $id.")
 
-    override suspend fun phrases() = phrases.toList()
+    override suspend fun phrases() = phrases
 
     override suspend fun remove(phrase: EmojiPhrase) {
         if (!phrases.contains(phrase)) {
