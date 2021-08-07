@@ -1,5 +1,8 @@
 package dev.decagon.godday.plugins
 
+import dev.decagon.godday.api.*
+import dev.decagon.godday.model.*
+import dev.decagon.godday.repository.*
 import io.ktor.routing.*
 import io.ktor.http.*
 import io.ktor.application.*
@@ -19,6 +22,14 @@ fun Application.configureRouting() {
 
         get("/about") {
             call.respondText("About")
+        }
+
+        fun phrase(db: Repository) {
+            post(PHRASE_ENDPOINT) {
+                val request = call.receive<Request>()
+                val phrase = db.add(EmojiPhrase(request.emoji, request.phrase))
+                call.respond(phrase)
+            }
         }
     }
 

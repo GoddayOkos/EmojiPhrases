@@ -9,3 +9,5 @@ fun main() {
         configureRouting()
     }.start(wait = true)
 }
+
+const val API_VERSION = "/api/v1"
