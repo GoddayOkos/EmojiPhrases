@@ -4,8 +4,10 @@ import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import dev.decagon.godday.plugins.*
 import dev.decagon.godday.repository.*
+import freemarker.cache.*
 import io.ktor.application.*
 import io.ktor.features.*
+import io.ktor.freemarker.*
 import io.ktor.gson.*
 import io.ktor.http.*
 import io.ktor.response.*
@@ -30,6 +32,10 @@ fun main() {
             gson {
                 setPrettyPrinting()
             }
+        }
+
+        install(FreeMarker) {
+            templateLoader = ClassTemplateLoader(this::class.java.classLoader, "templates")
         }
 
         val db = InMemoryRepository()
