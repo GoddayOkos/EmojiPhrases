@@ -1,11 +1,13 @@
 package dev.decagon.godday
 
+import dev.decagon.godday.model.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import dev.decagon.godday.plugins.*
 import dev.decagon.godday.repository.*
 import freemarker.cache.*
 import io.ktor.application.*
+import io.ktor.auth.*
 import io.ktor.features.*
 import io.ktor.freemarker.*
 import io.ktor.gson.*
@@ -36,6 +38,15 @@ fun main() {
 
         install(FreeMarker) {
             templateLoader = ClassTemplateLoader(this::class.java.classLoader, "templates")
+        }
+
+        install(Authentication) {
+            basic(name = "auth") {
+               realm = "Ktor server"
+               validate { credentials ->
+                   if (credentials.password == "${credentials.name}123") User(credentials.name) else null
+               }
+            }
         }
 
         val db = InMemoryRepository()
