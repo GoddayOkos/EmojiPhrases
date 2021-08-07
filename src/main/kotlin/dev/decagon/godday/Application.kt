@@ -1,12 +1,12 @@
 package dev.decagon.godday
 
-import com.ryanharter.ktor.moshi.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import dev.decagon.godday.plugins.*
 import dev.decagon.godday.repository.*
 import io.ktor.application.*
 import io.ktor.features.*
+import io.ktor.gson.*
 import io.ktor.http.*
 import io.ktor.response.*
 
@@ -27,7 +27,9 @@ fun main() {
 
         // ContentNegotiation for serializing kotlin data to JSON using moshi
         install(ContentNegotiation) {
-            moshi()
+            gson {
+                setPrettyPrinting()
+            }
         }
 
         val db = InMemoryRepository()
