@@ -4,6 +4,7 @@ import dev.decagon.godday.*
 import dev.decagon.godday.model.*
 import dev.decagon.godday.repository.*
 import io.ktor.application.*
+import io.ktor.freemarker.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
@@ -22,6 +23,6 @@ fun Route.phrase(db: Repository) {
 fun Route.phrases(db: Repository) {
     get(PHRASES) {
         val phrases = db.phrases()
-        call.respond(phrases.toArray())
+        call.respond(FreeMarkerContent("phrases.ftl", mapOf("phrases" to phrases)))
     }
 }
