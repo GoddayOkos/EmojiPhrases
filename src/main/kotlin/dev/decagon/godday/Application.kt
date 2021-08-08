@@ -54,7 +54,7 @@ fun main() {
 
         DatabaseFactory.init()
 
-        val db = InMemoryRepository()
+        val db = EmojiPhrasesRepository()
 
         configureRouting(db)
     }.start(wait = true)
