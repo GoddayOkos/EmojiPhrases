@@ -54,7 +54,7 @@ fun Route.phrases(db: Repository) {
                     db.add(EmojiPhrase(emoji, phrase))
                 }
             }
-            call.respondRedirect(PHRASES)
+            call.redirect(Phrases())
         }
     }
 }

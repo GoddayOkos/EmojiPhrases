@@ -59,3 +59,7 @@ fun main() {
 }
 
 const val API_VERSION = "/api/v1"
+
+suspend fun ApplicationCall.redirect(location: Any) {
+    respondRedirect(application.locations.href(location))
+}
