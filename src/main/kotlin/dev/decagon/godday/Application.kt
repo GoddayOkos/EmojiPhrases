@@ -12,6 +12,7 @@ import io.ktor.features.*
 import io.ktor.freemarker.*
 import io.ktor.gson.*
 import io.ktor.http.*
+import io.ktor.locations.*
 import io.ktor.response.*
 
 fun main() {
@@ -48,6 +49,8 @@ fun main() {
                }
             }
         }
+
+        install(Locations)
 
         val db = InMemoryRepository()
 

@@ -24,6 +24,7 @@ dependencies {
     implementation("io.ktor:ktor-gson:$ktor_version")
     implementation("io.ktor:ktor-freemarker:$ktor_version")
     implementation("io.ktor:ktor-auth:$ktor_version")
+    implementation("io.ktor:ktor-locations:$ktor_version")
     testImplementation("io.ktor:ktor-server-tests:$ktor_version")
     testImplementation("org.jetbrains.kotlin:kotlin-test:$kotlin_version")
 }

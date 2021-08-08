@@ -8,8 +8,17 @@ import io.ktor.http.*
 import io.ktor.application.*
 import io.ktor.freemarker.*
 import io.ktor.http.content.*
+import io.ktor.locations.*
 import io.ktor.response.*
 import io.ktor.request.*
+
+
+
+@Location("/")
+class Home
+
+@Location("/about")
+class About
 
 fun Application.configureRouting(db: Repository) {
     // Starting point for a Ktor app:
@@ -18,7 +27,7 @@ fun Application.configureRouting(db: Repository) {
             resources("images")
         }
 
-        get("/") {
+        get<Home> {
             call.respond(FreeMarkerContent("home.ftl", null))
         }
 
@@ -26,7 +35,7 @@ fun Application.configureRouting(db: Repository) {
             call.respondText("hello, ktor")
         }
 
-        get("/about") {
+        get<About> {
             call.respond(FreeMarkerContent("about.ftl", null))
         }
 
