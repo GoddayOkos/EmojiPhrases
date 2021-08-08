@@ -2,6 +2,7 @@ package dev.decagon.godday.repository
 
 import com.zaxxer.hikari.*
 import dev.decagon.godday.model.*
+import kotlinx.coroutines.*
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.*
 
@@ -35,4 +36,9 @@ object DatabaseFactory {
         }
         return HikariDataSource(config)
     }
+
+    suspend fun <T> dbQuery(block: () -> T): T =
+        withContext(Dispatchers.IO) {
+            transaction { block() }
+        }
 }

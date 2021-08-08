@@ -52,6 +52,8 @@ fun main() {
 
         install(Locations)
 
+        DatabaseFactory.init()
+
         val db = InMemoryRepository()
 
         configureRouting(db)
