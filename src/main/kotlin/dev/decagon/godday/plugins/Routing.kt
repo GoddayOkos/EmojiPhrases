@@ -15,7 +15,7 @@ fun Application.configureRouting(db: Repository) {
     // Starting point for a Ktor app:
     routing {
         static("/static") {
-            resource("images")
+            resources("images")
         }
 
         get("/") {
@@ -27,7 +27,7 @@ fun Application.configureRouting(db: Repository) {
         }
 
         get("/about") {
-            call.respondText("About")
+            call.respond(FreeMarkerContent("about.ftl", null))
         }
 
         // API
