@@ -32,7 +32,7 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed:$exposed_version")
     implementation("com.h2database:h2:$h2_version")
     implementation("com.zaxxer:HikariCP:$hikaricp_version")
-    implementation("org.postgresql:postgres:$postgres_version")
+    implementation("org.postgresql:postgresql:$postgres_version")
     testImplementation("io.ktor:ktor-server-tests:$ktor_version")
     testImplementation("org.jetbrains.kotlin:kotlin-test:$kotlin_version")
 }
