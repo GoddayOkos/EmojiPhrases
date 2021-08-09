@@ -30,17 +30,19 @@ fun main() {
             }
         }
 
-        // ContentNegotiation for serializing kotlin data to JSON using moshi
+        // ContentNegotiation for serializing kotlin data to JSON using gson
         install(ContentNegotiation) {
             gson {
                 setPrettyPrinting()
             }
         }
 
+        // FreeMarker template for writing frontend HTML codes
         install(FreeMarker) {
             templateLoader = ClassTemplateLoader(this::class.java.classLoader, "templates")
         }
 
+        // Authentication for signing in users with credentials
         install(Authentication) {
             basic(name = "auth") {
                realm = "Ktor server"
@@ -50,12 +52,15 @@ fun main() {
             }
         }
 
+        // Location for typed-safe routing
         install(Locations)
 
+        // Initialise db
         DatabaseFactory.init()
 
         val db = EmojiPhrasesRepository()
 
+        // Call to the function hosting all the routes
         configureRouting(db)
     }.start(wait = true)
 }
