@@ -13,22 +13,13 @@ object DatabaseFactory {
 
         transaction {
             SchemaUtils.create(EmojiPhrases)
-
-            EmojiPhrases.insert {
-                it[emoji] = "e1"
-                it[phrase] = "p1"
-            }
-            EmojiPhrases.insert {
-                it[emoji] = "e2"
-                it[phrase] = "p2"
-            }
         }
     }
 
     private fun hikari(): HikariDataSource {
         val config = HikariConfig().apply {
-            driverClassName = "org.h2.Driver"
-            jdbcUrl = "jdbc:h2:mem:test"
+            driverClassName = "org.postgresql.Driver"
+            jdbcUrl = System.getenv("JDBC_DATABASE_URL")
             maximumPoolSize = 3
             isAutoCommit = false
             transactionIsolation = "TRANSACTION_REPEATABLE_READ"
