@@ -1,17 +1,13 @@
 package dev.decagon.godday.plugins
 
 import dev.decagon.godday.api.*
-import dev.decagon.godday.model.*
 import dev.decagon.godday.repository.*
 import io.ktor.routing.*
-import io.ktor.http.*
 import io.ktor.application.*
 import io.ktor.freemarker.*
 import io.ktor.http.content.*
 import io.ktor.locations.*
 import io.ktor.response.*
-import io.ktor.request.*
-
 
 
 @Location("/")
