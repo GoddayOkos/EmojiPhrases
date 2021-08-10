@@ -1,6 +1,7 @@
 package dev.decagon.godday.plugins
 
 import dev.decagon.godday.api.*
+import dev.decagon.godday.model.*
 import dev.decagon.godday.repository.*
 import io.ktor.routing.*
 import io.ktor.application.*
@@ -8,6 +9,7 @@ import io.ktor.freemarker.*
 import io.ktor.http.content.*
 import io.ktor.locations.*
 import io.ktor.response.*
+import io.ktor.sessions.*
 
 
 @Location("/")
@@ -24,7 +26,8 @@ fun Application.configureRouting(db: Repository, hashFunction: (String) -> Strin
         }
 
         get<Home> {
-            call.respond(FreeMarkerContent("home.ftl", null))
+            val user = call.sessions.get<EPSession>()?.let { db.user(it.userId) }
+            call.respond(FreeMarkerContent("home.ftl", mapOf("user" to user)))
         }
 
         get("/hello") {
@@ -32,7 +35,8 @@ fun Application.configureRouting(db: Repository, hashFunction: (String) -> Strin
         }
 
         get<About> {
-            call.respond(FreeMarkerContent("about.ftl", null))
+            val user = call.sessions.get<EPSession>()?.let { db.user(it.userId) }
+            call.respond(FreeMarkerContent("about.ftl", mapOf("user" to user)))
         }
 
         // Auth Routes
@@ -42,7 +46,7 @@ fun Application.configureRouting(db: Repository, hashFunction: (String) -> Strin
 
         // API
         phrase(db)   // POST
-        phrases(db)  // GET
+        phrases(db, hashFunction)  // GET
     }
 
 }
