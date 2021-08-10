@@ -16,7 +16,7 @@ class Home
 @Location("/about")
 class About
 
-fun Application.configureRouting(db: Repository) {
+fun Application.configureRouting(db: Repository, hashFunction: (String) -> String) {
     // Starting point for a Ktor app:
     routing {
         static("/static") {
@@ -34,6 +34,11 @@ fun Application.configureRouting(db: Repository) {
         get<About> {
             call.respond(FreeMarkerContent("about.ftl", null))
         }
+
+        // Auth Routes
+        signin(db, hashFunction)
+        signout()
+        signup(db, hashFunction)
 
         // API
         phrase(db)   // POST

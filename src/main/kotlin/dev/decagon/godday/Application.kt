@@ -43,25 +43,20 @@ fun main() {
         }
 
         // Authentication for signing in users with credentials
-        install(Authentication) {
-            basic(name = "auth") {
-               realm = "Ktor server"
-               validate { credentials ->
-                   if (credentials.password == "${credentials.name}123") User(credentials.name) else null
-               }
-            }
-        }
 
         // Location for typed-safe routing
         install(Locations)
+
+        val hashFunction = { s: String -> hash(s) }
 
         // Initialise db
         DatabaseFactory.init()
 
         val db = EmojiPhrasesRepository()
 
+
         // Call to the function hosting all the routes
-        configureRouting(db)
+        configureRouting(db, hashFunction)
     }.start(wait = true)
 }
 
