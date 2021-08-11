@@ -1,12 +1,14 @@
 package dev.decagon.godday.api
 
 import dev.decagon.godday.*
+import dev.decagon.godday.api.requests.*
 import dev.decagon.godday.model.*
 import dev.decagon.godday.plugins.*
 import dev.decagon.godday.repository.*
 import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.freemarker.*
+import io.ktor.http.*
 import io.ktor.locations.*
 import io.ktor.locations.post
 import io.ktor.request.*
@@ -17,7 +19,7 @@ import io.ktor.sessions.*
 
 import kotlin.IllegalArgumentException
 
-const val PHRASE_API_ENDPOINT = "$API_VERSION/phrase"
+const val PHRASE_API_ENDPOINT = "$API_VERSION/phrases"
 const val PHRASES = "/phrases"
 
 @Location(PHRASES)
@@ -26,19 +28,28 @@ class Phrases
 @Location(PHRASE_API_ENDPOINT)
 class PhrasesApi
 
-//fun Route.phrase(db: Repository) {
-//    post(PHRASE_ENDPOINT) {
-//        val request = call.receive<Request>()
-//        val phrase = db.add("", request.emoji, request.phrase)
-//        call.respond(phrase)
-//    }
-//}
 
 fun Route.phrasesApi(db: Repository) {
     authenticate("jwt") {
         get<PhrasesApi> {
             call.respond(db.phrases())
         }
+
+       post<PhrasesApi> {
+           val user = call.apiUser!!
+
+           try {
+               val request = call.receive<PhrasesApiRequest>()
+               val phrase = db.add(user.userId, request.emoji, request.phrase)
+               if (phrase != null) {
+                   call.respond(phrase)
+               } else {
+                   call.respondText("Invalid data received", status = HttpStatusCode.InternalServerError)
+               }
+           } catch (e: Throwable) {
+                call.respondText("Invalid data received", status = HttpStatusCode.BadRequest)
+           }
+       }
     }
 }
 

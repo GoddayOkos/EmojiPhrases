@@ -102,3 +102,5 @@ fun ApplicationCall.securityCode(date: Long, user: User, hashFunction: (String) 
 fun ApplicationCall.verifyCode(date: Long, user: User, code: String, hashFunction: (String) -> String) =
     securityCode(date, user, hashFunction) == code &&
             (System.currentTimeMillis() - date).let { it > 0 && it < TimeUnit.MILLISECONDS.convert(2, TimeUnit.HOURS) }
+
+val ApplicationCall.apiUser get() = authentication.principal<User>()
