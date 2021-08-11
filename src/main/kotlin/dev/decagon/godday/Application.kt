@@ -8,6 +8,7 @@ import dev.decagon.godday.repository.*
 import freemarker.cache.*
 import io.ktor.application.*
 import io.ktor.auth.*
+import io.ktor.auth.jwt.*
 import io.ktor.features.*
 import io.ktor.freemarker.*
 import io.ktor.gson.*
@@ -46,8 +47,6 @@ fun main() {
             templateLoader = ClassTemplateLoader(this::class.java.classLoader, "templates")
         }
 
-        // Authentication for signing in users with credentials
-
         // Location for typed-safe routing
         install(Locations)
 
@@ -63,11 +62,29 @@ fun main() {
         // Initialise db
         DatabaseFactory.init()
 
+        // Create Repository instance
         val db = EmojiPhrasesRepository()
 
+        // Create JWTService instance
+        val jwtService = JwtService()
+
+        // Install Authentication
+        install(Authentication) {
+            jwt("jwt") {
+                verifier(jwtService.verifier)
+                realm = "emojiphrases app"
+                validate {
+                    val payload = it.payload
+                    val claim = payload.getClaim("id")
+                    val claimString = claim.asString()
+                    val user = db.userById(claimString)
+                    user
+                }
+            }
+        }
 
         // Call to the function hosting all the routes
-        configureRouting(db, hashFunction)
+        configureRouting(db, hashFunction, jwtService)
     }.start(wait = true)
 }
 

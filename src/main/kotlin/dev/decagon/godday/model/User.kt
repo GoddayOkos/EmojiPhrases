@@ -1,5 +1,6 @@
 package dev.decagon.godday.model
 
+import io.ktor.auth.*
 import org.jetbrains.exposed.sql.*
 import java.io.Serializable
 
@@ -7,7 +8,7 @@ data class User(
     val userId: String,
     val email: String,
     val displayName: String,
-    val passwordHash: String) : Serializable
+    val passwordHash: String) : Serializable, Principal
 
 
 object Users: Table() {

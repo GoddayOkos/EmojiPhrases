@@ -1,5 +1,6 @@
 package dev.decagon.godday.plugins
 
+import dev.decagon.godday.*
 import dev.decagon.godday.api.*
 import dev.decagon.godday.model.*
 import dev.decagon.godday.repository.*
@@ -18,7 +19,7 @@ class Home
 @Location("/about")
 class About
 
-fun Application.configureRouting(db: Repository, hashFunction: (String) -> String) {
+fun Application.configureRouting(db: Repository, hashFunction: (String) -> String, jwtService: JwtService) {
     // Starting point for a Ktor app:
     routing {
         static("/static") {
@@ -43,10 +44,11 @@ fun Application.configureRouting(db: Repository, hashFunction: (String) -> Strin
         signin(db, hashFunction)
         signout()
         signup(db, hashFunction)
+        phrases(db, hashFunction)
 
         // API
+        login(db, jwtService)
         phrase(db)   // POST
-        phrases(db, hashFunction)  // GET
     }
 
 }
