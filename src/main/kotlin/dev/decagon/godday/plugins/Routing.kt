@@ -48,7 +48,7 @@ fun Application.configureRouting(db: Repository, hashFunction: (String) -> Strin
 
         // API
         login(db, jwtService)
-        phrase(db)   // POST
+        phrasesApi(db)   // GET
     }
 
 }

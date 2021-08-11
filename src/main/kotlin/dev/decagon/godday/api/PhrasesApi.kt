@@ -17,17 +17,28 @@ import io.ktor.sessions.*
 
 import kotlin.IllegalArgumentException
 
-const val PHRASE_ENDPOINT = "$API_VERSION/phrase"
+const val PHRASE_API_ENDPOINT = "$API_VERSION/phrase"
 const val PHRASES = "/phrases"
 
 @Location(PHRASES)
 class Phrases
 
-fun Route.phrase(db: Repository) {
-    post(PHRASE_ENDPOINT) {
-        val request = call.receive<Request>()
-        val phrase = db.add("", request.emoji, request.phrase)
-        call.respond(phrase)
+@Location(PHRASE_API_ENDPOINT)
+class PhrasesApi
+
+//fun Route.phrase(db: Repository) {
+//    post(PHRASE_ENDPOINT) {
+//        val request = call.receive<Request>()
+//        val phrase = db.add("", request.emoji, request.phrase)
+//        call.respond(phrase)
+//    }
+//}
+
+fun Route.phrasesApi(db: Repository) {
+    authenticate("jwt") {
+        get<PhrasesApi> {
+            call.respond(db.phrases())
+        }
     }
 }
 
