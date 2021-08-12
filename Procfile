@@ -1,1 +1,1 @@
-web: ./build/install/KtorProjects/bin/KtorProjects
+web: ./build/install/emojiphrases/bin/emojiphrases
