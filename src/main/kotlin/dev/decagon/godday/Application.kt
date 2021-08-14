@@ -21,7 +21,8 @@ import java.net.*
 import java.util.concurrent.*
 
 fun main() {
-    embeddedServer(Netty, port = System.getenv("PORT").toInt()) {
+    embeddedServer(Netty, port = System.getenv("PORT").toInt()) {   // Remote server
+   // embeddedServer(Netty, port = 8080, host = "0.0.0.0") {     // Local server
         // DefaultHeaders are used to set HTTP Headers for responses
         install(DefaultHeaders)
 

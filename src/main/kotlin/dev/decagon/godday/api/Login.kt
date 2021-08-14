@@ -1,6 +1,7 @@
 package dev.decagon.godday.api
 
 import dev.decagon.godday.*
+import dev.decagon.godday.api.response.*
 import dev.decagon.godday.repository.*
 import io.ktor.application.*
 import io.ktor.http.*
@@ -24,9 +25,9 @@ fun Route.login(db: Repository, jwtService: JwtService) {
 
         if (user != null) {
             val token = jwtService.generateToken(user)
-            call.respondText(token)
+            call.respond(LoginResponse(token))
         } else {
-            call.respondText("Invalid user")
+            call.respond(HttpStatusCode.BadRequest, "Invalid user")
         }
     }
 }
